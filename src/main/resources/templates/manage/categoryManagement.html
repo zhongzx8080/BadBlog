@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>后台管理</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            padding-bottom: 70px;
+            margin-bottom: 60px;
+            padding-top: 70px;
+        }
+
+        .background {
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header th:include="common/manageNavbar"></header>
+<canvas class="background"></canvas>
+<div class="container">
+    <div class="row" >
+        <div class="col-md-9 col-md-offset-1">
+            <ol class="breadcrumb">
+                <li><a href="/manage/article/">管理</a></li>
+                <li><a href="/manage/category/">分类管理</a></li>
+            </ol>
+            <table th:unless="${ #lists.size(categoryList) == 0 }" class="table table-hover table-striped">
+                <tr>
+                    <th>选择</th>
+                    <th>类别ID</th>
+                    <th>用户ID</th>
+                    <th>分类名称</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                <tr  th:each="category : ${categoryList}" >
+                    <td><input type="checkbox" name="cidList" th:value="${category.cid}"></td>
+                    <td th:text="${category.cid}"></td>
+                    <td th:text="${category.uid}"></td>
+                    <td th:inline="text">
+                        <a th:href="@{'/category/all#' + ${category.cid} }" target="_blank">[[${category.category}]]</a>
+                    </td>
+                    <td th:inline="text">[[ ${#dates.format(category.gmtCreate,"YYYY-MM-dd HH:mm:ss")} ]]</td>
+                    <td th:inline="text">
+                        <a th:href="@{ '/category/edit/' + ${category.cid} }">
+                            <span class="glyphicon glyphicon-edit"></span>编辑
+                        </a>&nbsp;
+                        <a href="javascript:void (0)" th:onclick="'deleteCategory(' +  ${category.cid} + ');'">
+                            <span class="glyphicon glyphicon-trash"></span>删除
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="btn btn-primary" onclick="selectAll();">全选</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-info" onclick="selectNone();">全不选</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-warning" onclick="unselect();">反选</button>
+                    </td>
+                    <td>
+                        <button id="deleteCategories" class="btn btn-danger">删除</button>
+                    </td>
+                    <td colspan="2" >
+                        <button id="createCategory" class="btn btn-success btn-block" data-toggle="modal"
+                                data-target="#categoryModal">新建分类
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <div th:if="${#lists.size(categoryList) == 0}" >
+                <button id="createCategory" class="btn btn-success btn-block" data-toggle="modal"
+                        data-target="#categoryModal">新建分类
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+
+    提示模态框
+
+-->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 id="modalTitle" class="modal-title">请选择</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--
+    新建分类模态框
+-->
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">新建分类</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/category/insert" method="post" onsubmit="return insertCategory();">
+                    <div class="form-group">
+                        <label for="category" class="control-label">分类名称:</label>
+                        <input name="category" type="text" class="form-control" id="category">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button id="btnSubmit" type="submit" class="btn btn-success">提交</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer th:include="common/footer"
+        style=" position: absolute;bottom: 0;width: 100%;height: 60px;background-color: #99979c;"></footer>
+<script th:src="@{/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/particles.min.js}"></script>
+<script th:src="@{/js/badblog.js}"></script>
+<script type="text/javascript">
+
+    // 全选
+    function selectAll() {
+        $(":checkbox").prop("checked", true);
+    }
+
+    //全不选
+    function selectNone() {
+        $(":checkbox").prop("checked", false);
+    }
+
+    //反选
+    function unselect() {
+        $(":checkbox").each(function () {
+            $(this).prop("checked", !$(this).prop("checked"));
+        })
+    }
+
+
+    function deleteCategory(cid) {
+        if (confirm("确定要删除吗?")) {
+            $.get("/category/delete?cidList=" + cid, function (data) {
+                location.reload();
+            })
+        }
+    }
+
+    $("#deleteCategories").click(function () {
+
+        if (!$("input[name='cidList']:checked").val()) {
+            $("#modalTitle").html("请选择要删除的分类");
+            $("#myModal").modal('toggle');
+            return;
+        }
+
+
+        var list = [];
+        $("input[name='cidList']:checked").each(function () {
+            list.push("cidList=" + $(this).val());
+        });
+
+
+        console.log("删除分类的list" + list);
+
+
+        if (confirm("确定要删除吗?")) {
+            $.get("/category/delete?" + list.toString().replace(/,/g, '&'), function (data) {
+                console.log("ajax=" + data);
+                location.reload();
+            });
+        }
+
+    });
+
+    $("#category").keyup(function () {
+        insertCategory()
+    });
+
+    $("#category").blur(function () {
+        insertCategory();
+    });
+
+    function insertCategory() {
+        var category = $("#category").val();
+        if (category == "") {
+            console.log("无输入");
+            $("#btnSubmit").attr("disabled", "disabled");
+            return false;
+        }
+
+        $.ajax({
+            url: '/category/exist/' + category,
+            success: function (data) {
+                if (data.length > 0) {
+                    $("#btnSubmit").attr("disabled", "disabled");
+                    console.log("分类已存在!");
+                    return false;
+                } else {
+                    $("#btnSubmit").removeAttr("disabled");
+                    console.log("不存在");
+                    return true;
+                }
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

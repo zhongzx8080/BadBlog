@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>搜索</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            padding-bottom: 70px;
+            margin-bottom: 60px;
+            padding-top: 70px;
+        }
+
+        .background {
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+    </style>
+</head>
+<body>
+<header th:include="common/navbar"></header>
+<canvas class="background"></canvas>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="well well-lg" th:inline="text">
+                <span th:inline="text">关键字:<strong>[[${keyword}]]</strong></span>
+                &nbsp;&nbsp;&nbsp;
+                <span th:inline="text" class="text-center">找到:[[${#lists.size(articleList)}]]个结果</span>
+            </div>
+
+            <table class="table table-striped table-hover" th:unless="${#lists.size(articleList) == 0}">
+                <tr>
+                    <td>序号</td>
+                    <td>标题</td>
+                    <td>日期</td>
+                    <td>浏览量</td>
+                </tr>
+                <tr th:each="article : ${articleList}">
+                    <td th:text="${articleStat.count}"></td>
+                    <td th:inline="text">
+                        <a th:href="@{'/article/display/' + ${article.aid} }" th:utext="${article.title}" ></a>
+                    </td>
+                    <td th:inline="text">
+                        [[${#dates.format(article.gmtPost,'YYYY-MM-dd HH:mm:ss')}]]
+                    </td>
+                    <td th:text="${article.view}"></td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<footer th:include="common/footer"
+        style=" position: absolute;bottom: 0;width: 100%;height: 60px;background-color: #99979c;"></footer>
+<script th:src="@{/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/particles.min.js}"></script>
+<script th:src="@{/js/badblog.js}"></script>
+</body>
+</html>

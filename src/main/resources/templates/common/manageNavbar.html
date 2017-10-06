@@ -1,0 +1,53 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">BadBlog</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/create">新建文章</a></li>
+                <li><a href="/manage/article">文章管理</a></li>
+                <li><a href="/manage/category">分类管理</a></li>
+                <!--<li><a href="#">个人设置</a></li>-->
+                <li class="dropdown" th:unless="${ session.user == null }" th:inline="text">
+                    <a href="#" id="dropdown1" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false">
+                        <span class="glyphicon glyphicon-user"></span>
+                        [[ ${session.user.username} ]] <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown1">
+                        <li>
+                            <a href="#">
+                                <span class="glyphicon glyphicon-time"></span>
+                                登录时间:[[ ${#dates.format(session.user.gmtRegister,'YYYY-MM-dd HH:mm:ss')} ]]
+                            </a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li>
+                            <a href="/user/logout">
+                                <span class="glyphicon glyphicon-log-out"></span>
+                                退出
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <form class="navbar-form navbar-right" action="/search">
+                <input id="search" name="keyword" type="text" class="form-control" placeholder="搜索">
+                <button type="submit" class="btn btn-info">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </form>
+
+        </div>
+    </div>
+</nav>

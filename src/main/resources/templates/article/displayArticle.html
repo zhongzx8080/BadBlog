@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${article.title}">展示</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/editormd.preview.css}"/>
+    <style type="text/css">
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            padding-bottom: 70px;
+            margin-bottom: 60px;
+            padding-top: 70px;
+        }
+
+        /*
+
+        标签云
+        */
+        #tagscloud {
+            width: 250px;
+            height: 260px;
+            position: relative;
+            font-size: 12px;
+            color: #333;
+            margin: 20px auto 0;
+            text-align: center;
+        }
+
+        #tagscloud a {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            color: #333;
+            font-family: Arial;
+            text-decoration: none;
+            margin: 0 10px 15px 0;
+            line-height: 18px;
+            text-align: center;
+            font-size: 12px;
+            padding: 1px 5px;
+            display: inline-block;
+            border-radius: 3px;
+        }
+
+        #tagscloud a.tagc0 {
+            background: #006633;
+            color: #fff;
+        }
+
+        #tagscloud a.tagc1 {
+            background: #666;
+            color: #fff;
+        }
+
+        #tagscloud a.tagc2 {
+            background: #F16E50;
+            color: #fff;
+        }
+
+        #tagscloud a:hover {
+            background: #0099ff;
+            color: #fff;
+        }
+
+
+    </style>
+</head>
+<body data-spy="scroll" data-target="#scrollSpy" data-offset="0">
+<header th:include="common/navbar"></header>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 blog-main">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title" th:text="${article.title}">Panel title</h3>
+                </div>
+                <div id="content" class="panel-body" th:utext="${article.html}"></div>
+                <div class="panel-footer" th:inline="text">
+                    <div style="float: right">
+                            <span th:unless="${session.user == null}" class="label label-primary" th:inline="text">
+                                作者:[[ ${session.user.username} ]]
+                            </span> &nbsp;&nbsp;
+                        <span class="label label-primary" th:inline="text">发表时间:[[ ${#dates.format(article.gmtPost,'YYYY-MM-dd HH:mm:ss')} ]]</span>
+                        <span class="label label-primary" th:inline="text">浏览([[ ${article.view} ]])</span>
+                        <span th:unless="${session.user == null}">
+                                <a th:if="${session.user.uid == article.uid }" class="label label-danger"
+                                   th:href="@{'/edit?aid=' + ${article.aid} }" th:inline="text">编辑</a>
+                            </span>
+                    </div>
+
+                    <span th:each="category : ${categoryList}">
+                        <span class="label label-warning">
+                            <a th:href="@{'/category/all#' + ${category.cid} }" th:text="${category.category}"
+                               target="_blank"></a>
+                        </span>
+                        &nbsp;&nbsp;
+                    </span>
+                    <hr class="divider">
+                    <nav aria-label="...">
+                        <ul class="pager">
+                            <li class="previous"><a th:href="@{'/article/display/' + ${article.aid - 1} }"><span
+                                    aria-hidden="true">&larr;</span> 上一篇</a></li>
+                            <li class="next"><a th:href="@{'/article/display/' + ${article.aid + 1} }">下一篇 <span
+                                    aria-hidden="true">&rarr;</span></a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-3 blog-sidebar">
+            <div class="sidebar-module">
+                <ul class="list-group" th:inline="text">
+                    <li class="list-group-item list-group-item-success">
+                        <span class="glyphicon glyphicon-user"></span> &nbsp;个人信息
+                    </li>
+                    <li class="list-group-item">姓名: <strong>钟志兴</strong></li>
+                    <li class="list-group-item ">专业: <strong>计算机科学与技术</strong></li>
+                </ul>
+            </div>
+
+            <li class="list-group-item list-group-item-success ">
+                <span class="glyphicon glyphicon-th"></span> &nbsp;热门分类
+            </li>
+            <div id="tagscloud">
+                <a th:each="tag : ${tags}" th:href="@{'/category/all#' + ${tag.cid} }" th:text="${tag.category}"
+                   th:class="${ 'tagc' + tagStat.count % 3 }" target="_blank"></a>
+                <a th:each="tag : ${tags}" th:href="@{'/category/all#' + ${tag.cid} }" th:text="${tag.category}"
+                   th:class="${ 'tagc' + tagStat.count % 3 }" target="_blank"></a>
+                <a th:each="tag : ${tags}" th:href="@{'/category/all#' + ${tag.cid} }" th:text="${tag.category}"
+                   th:class="${ 'tagc' + tagStat.count % 3 }" target="_blank"></a>
+            </div>
+
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-success ">
+                    <span class="glyphicon glyphicon-star"></span> &nbsp;阅读排行榜
+                </li>
+                <li class="list-group-item " th:each="article : ${mostView}" th:inline="text">
+                        <span class="badge" th:inline="text">
+                            ([[${article.view}]])
+                        </span>
+                    <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}"></a>
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+</div>
+</div>
+
+<footer th:include="common/footer"
+        style=" position: absolute;bottom: 0;width: 100%;height: 60px;background-color: #99979c;"></footer>
+<script th:src="@{/jquery.min.js}"></script>
+<script th:src="@{/lib/marked.min.js}"></script>
+<script th:src="@{/lib/prettify.min.js}"></script>
+<script th:src="@{/editormd.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/badblog.js}"></script>
+<script th:src="@{/js/tagscloud.js}"></script>
+
+</body>
+</html>

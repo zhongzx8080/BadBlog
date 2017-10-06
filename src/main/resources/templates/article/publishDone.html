@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="=http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>发布成功</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <style type="text/css">
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            padding-bottom: 70px;
+            margin-bottom: 60px;
+            padding-top: 70px;
+        }
+
+        .background {
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+<canvas class="background"></canvas>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title" th:inline="text">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        [[ ${tip} ]]
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p>文章标题: <a th:href="@{ '/article/display/' + ${aid} }" th:text="${title}"></a></p>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a th:href="@{ '/article/display/' + ${aid} }"><span
+                                class="glyphicon glyphicon-hand-right"></span> &nbsp;&nbsp;立即查看</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a th:href="@{ '/edit?aid=' + ${aid} }"><span class="glyphicon glyphicon-hand-right"></span>
+                            &nbsp;&nbsp;继续编辑</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="/create"><span class="glyphicon glyphicon-hand-right"></span>
+                            &nbsp;&nbsp;继续新建</a>
+                    </li>
+                    <li class="list-group-item"><a href="/"><span class="glyphicon glyphicon-hand-right"></span> &nbsp;&nbsp;个人首页</a>
+                    </li>
+                    <li class="list-group-item"><a href="/manage/article"><span
+                            class="glyphicon glyphicon-hand-right"></span> &nbsp;&nbsp;后台首页</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer th:include="common/footer"
+        style=" position: absolute;bottom: 0;width: 100%;height: 60px;background-color: #99979c;"></footer>
+
+<script th:src="@{/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/particles.min.js}"></script>
+<script th:src="@{/js/badblog.js}"></script>
+
+<script>
+    $(".list-group-item").mouseover(function () {
+        $(this).animate({left: "+=5px"},200);
+    }).mouseout(function () {
+        $(this).animate({left: "-=5px"},200);
+    });
+</script>
+</body>
+</html>

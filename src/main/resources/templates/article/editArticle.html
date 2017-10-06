@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <title>编辑文章</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/editormd.min.css}"/>
+    <style type="text/css">
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            padding-bottom: 70px;
+            margin-bottom: 60px;
+            padding-top: 70px;
+        }
+
+    </style>
+</head>
+<body>
+<header th:include="common/navbar"></header>
+<form action="/article/update" method="post" onsubmit="return checkForm();">
+    <div class="editormd" id="test-editormd">
+        <textarea class="editormd-markdown-textarea" name="markdown" id="editormd" th:text="${article.markdown}"></textarea>
+        <textarea class="editormd-html-textarea" name="html"></textarea>
+    </div>
+    <div style="padding-left: 5%">
+        <div class="panel panel-default" style="width: 95%">
+            <div class="panel-heading">
+                <div class="input-group input-group-md">
+                    <span class="input-group-addon" id="sizing-addon1">文章标题</span>
+                    <input type="text" name="title" class="form-control" th:value="${article.title}" placeholder="文章标题" required="required"
+                           aria-describedby="sizing-addon1">
+
+                    <input type="hidden" name="aid" th:value="${article.aid}">
+                </div>
+            </div>
+            <div class="panel-heading">
+                个人分类 &nbsp;&nbsp;&nbsp;<a href="/manage/category">编辑分类</a>
+            </div>
+            <div class="panel-heading">
+                <div class="row">
+                    <div th:each="category : ${categoryList}" class="col-md-2">
+                        <div class="input-group">
+                            <input type="text" readonly="readonly" class="form-control" th:value="${category.category}"  >
+                            <span class="input-group-addon">
+                                <input type="checkbox" th:checked="${ cidList.contains(category.cid) }"  th:name="cidList" th:value="${category.cid}">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-heading">
+                <button type="submit" class="btn btn-success btn-block ">保存修改</button>
+                <!--<button type="reset" class="btn btn-danger btn-md">重置</button>-->
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="errorMsg">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            <span id="errorMsg">...</span>
+        </div>
+    </div>
+</div>
+
+<footer th:include="common/footer"
+        style=" position: absolute;bottom: 0;width: 100%;height: 60px;background-color: #99979c;"></footer>
+<script type="text/javascript" th:src="@{/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/editormd.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+    var testEditor = editormd("test-editormd", {
+        width: "90%",
+        height: 640,
+        saveHTMLToTextarea: true,
+        syncScrolling: "single",
+    });
+
+
+    function checkForm() {
+
+        if (testEditor.getMarkdown() == "") {
+            $("#errorMsg").text("请输入文章内容!");
+            $("#myModal").modal("toggle");
+            return false;
+        }
+
+        var checkbox = $(":checkbox");
+        for (var i = 0; i < checkbox.length; i++) {
+            if (checkbox[i].checked) {
+                return true;
+            }
+        }
+
+        $("#errorMsg").text("请选择文章类别!");
+        $("#myModal").modal("toggle");
+        return false;
+    }
+
+</script>
+<script th:src="@{/js/badblog.js}"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>用户登录</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style type="text/css">
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            padding-bottom: 70px;
+            margin-bottom: 60px;
+            padding-top: 70px;
+        }
+
+        .background {
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+
+    </style>
+</head>
+<body>
+<canvas class="background"></canvas>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-2">
+            <div  class="alert alert-danger"  data-dismiss="alert" aria-label="Close" role="alert"  th:unless="${reason == null}" th:inline="text">
+                [[${reason}]]
+            </div>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">登录</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" method="post" action="/user/signin">
+                        <div class="form-group">
+                            <label for="inputUsername" class="col-sm-2 control-label">用户名</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputUsername" name="username"
+                                       placeholder="测试用户名:rexunil"
+                                       required="required">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword" class="col-sm-2 control-label">密码</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" id="inputPassword" name="password"
+                                       placeholder="测试密码:badblog"
+                                       required="required">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-4">
+                                <button id="btnSignin" type="submit" class="btn btn-info btn-block">登录</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">
+                    <a href="/user/forgetPassword">忘记密码?</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <!--<a href="/user/register">注册</a>-->
+                    <a href="/">首页</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:include="common/footer"
+        style=" position: absolute;bottom: 0;width: 100%;height: 60px;background-color:#99979c;"></footer>
+<script th:src="@{/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/particles.min.js}"></script>
+<script th:src="@{/js/badblog.js}"></script>
+</body>
+</html>

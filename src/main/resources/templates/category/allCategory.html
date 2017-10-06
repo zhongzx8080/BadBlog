@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>分类</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <style type="text/css">
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            padding-bottom: 70px;
+            margin-bottom: 60px;
+            padding-top: 70px;
+        }
+
+        .background {
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+    </style>
+</head>
+<body>
+<header th:include="common/navbar"></header>
+<canvas class="background"></canvas>
+<div class="container">
+    <div class="row" th:unless="${#maps.size(categoryArticleMap) == 0}">
+
+        <div class="col-md-10">
+
+            <div class="tab-content">
+                <div th:each="map : ${categoryArticleMap}" role="tabpanel"
+                     class="tab-pane"
+                     th:id="${map.key.cid}"
+                     th:inline="text">
+
+                    <div class="list-group">
+                        <a class="list-group-item" th:each="article : ${map.value}"
+                           th:href="@{'/article/display/' + ${article.aid}  }" th:inline="text" target="_blank">
+                            <span class="glyphicon glyphicon-minus-sign"></span>
+                            &nbsp;<strong>[[ ${article.title} ]]</strong> &nbsp;&nbsp;
+                            <span class="glyphicon glyphicon-time"></span>
+                            [[${#dates.format(article.gmtPost,'YYYY-MM-dd')}]]
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-2">
+            <ul id="myTabs" class="nav nav-tabs" role="tablist"
+                style="position: fixed;width: 15%;background-color: transparent;">
+                <li role="presentation" th:each="map : ${categoryArticleMap}">
+                    <a th:href="@{ '#' + ${map.key.cid} }" th:attr="aria-controls=${ map.key.cid }" role="tab"
+                       data-toggle="tab" th:inline="text">
+                        [[ ${map.key.category} ]]
+                        <span class="badge">[[ ${#lists.size(map.value)} ]]</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<footer th:include="common/footer"
+        style=" position: absolute;bottom: 0;width: 100%;height: 60px;background-color: #99979c;"></footer>
+<script th:src="@{/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/particles.min.js}"></script>
+<script th:src="@{/js/badblog.js}"></script>
+<script>
+    $(".list-group  a").mouseover(function () {
+        $(this).addClass("list-group-item-warning");
+    }).mouseout(function () {
+        $(this).removeClass("list-group-item-warning");
+    });
+
+    $(".list-group-item").mouseover(function () {
+        $(this).css({left: "+=10px"});
+    }).mouseout(function () {
+        $(this).css({left: "-=10px"});
+    });
+
+    $(function () {
+        var href = location.href;
+        var id = href.substring(href.indexOf("#") + 1);
+        if (id == href) {
+            $("#myTabs li:first").tab("show");
+            $(".tab-pane:first").addClass("active");
+        } else {
+            $('#' + id).addClass("active");
+            $("[href='#" + id + "']").tab("show");
+        }
+    });
+
+</script>
+</body>
+</html>

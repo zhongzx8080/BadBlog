@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>编辑分类</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            padding-bottom: 70px;
+            margin-bottom: 60px;
+            padding-top: 70px;
+        }
+
+        form {
+            padding-top: 5%;
+        }
+
+        .background {
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+    </style>
+</head>
+<body>
+<header th:include="common/manageNavbar"></header>
+<canvas class="background"></canvas>
+<div class="container">
+    <div class="row">
+        <div class="col-md-9 col-md-offset-1">
+            <ol class="breadcrumb">
+                <li><a href="/manage/article/">管理</a></li>
+                <li><a href="/manage/category/">分类管理</a></li>
+                <li class="active">编辑分类</li>
+            </ol>
+            <form th:unless="${ category == null }" class="form-horizontal" method="post" action="/category/edit"
+                  onsubmit="return checkForm();">
+                <div class="form-group">
+                    <label for="oldCategory" class="col-sm-2 control-label">Origin:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="oldCategory" th:value="${category.category}"
+                               readonly>
+                        <input type="hidden" name="cid" th:value="${category.cid}">
+                    </div>
+                </div>
+
+                <div id="divSuccess" class="form-group  has-feedback">
+                    <label class="col-sm-2 control-label" for="newCategory">New:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="newCategory" name="category" aria-describedby="inputSuccess2Status">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-6">
+                        <button id="save" type="submit" class="btn btn-default btn-block">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:include="common/footer"
+        style=" position: absolute;bottom: 0;width: 100%;height: 60px;background-color: #99979c;"></footer>
+<script th:src="@{/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/particles.min.js}"></script>
+<script th:src="@{/js/badblog.js}"></script>
+
+<script>
+
+    $("#save").attr("disabled", "disabled");
+
+    function checkForm() {
+        var state = existCategory();
+        console.log("表单是否提交:" + state);
+        return state;
+    }
+
+
+    $("#newCategory").blur(function () {
+        existCategory();
+    });
+
+    $("#newCategory").keyup(function () {
+        existCategory();
+    });
+
+    function existCategory () {
+        var newCategory = $("#newCategory").val();
+
+        if (newCategory == "") {
+            console.log("无输入");
+            $("#divSuccess").removeClass("has-success").addClass("has-error");
+            $("#save").attr("disabled", "disabled");
+            return false;
+        }
+
+        $.ajax({
+            url: '/category/exist/' + newCategory,
+            success: function (data) {
+                if (data.length > 0) {
+                    $("#divSuccess").removeClass("has-success").addClass("has-error");
+                    $("#save").attr("disabled", "disabled");
+                    console.log("分类已存在!");
+                    return false;
+                } else {
+                    $("#divSuccess").removeClass("has-error").addClass("has-success");
+                    $("#save").removeAttr("disabled");
+                    console.log("不存在");
+                    return true;
+                }
+            }
+        });
+    }
+
+
+</script>
+
+</body>
+</html>

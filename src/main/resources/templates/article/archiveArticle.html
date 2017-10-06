@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>归档</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <style type="text/css">
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            padding-bottom: 70px;
+            margin-bottom: 60px;
+            padding-top: 70px;
+        }
+
+        .background {
+            position: absolute;
+            display: block;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+<header th:include="common/navbar"></header>
+
+<canvas class="background"></canvas>
+
+<div class="container" th:if="${ #maps.size(articleMap) == 0 }" th:include="common/blank"></div>
+
+<div class="container">
+    <div class="row" th:unless="${#maps.size(articleMap) == 0 }">
+        <div class="col-md-10">
+            <div class="panel panel-default">
+                <div class="panel-body" th:each="map : ${articleMap}" th:id="${map.key}">
+                    <h2 th:inline="text">[[${map.key}]] 年</h2>
+                    <hr class="divider">
+                    <div th:each="month:${map.value}">
+                        <div class="list-group">
+                            <div class="list-group-item" th:id="${ map.key + '-' + month.key }" role="tab">
+                                <a th:inline="text" th:href="@{'#collapse' + ${map.key} + ${month.key} }"
+                                   role="button"
+                                   data-toggle="collapse" th:attr="data-parent= ${'#'+ map.key}"
+                                   th:attrappend="aria-controls=${'#collapse' + map.key + month.key }">
+                                    &nbsp;&nbsp;<span class="glyphicon glyphicon-calendar"></span>
+                                    [[${month.key}]]月 ([[${#lists.size(month.value)}]]篇)
+                                </a>
+                            </div>
+                        </div>
+                        <div th:id="${'collapse'+ map.key + month.key }" class="panel-collapse collapse"
+                             role="tabpanel"
+                             th:attr="aria-labelledby=${ map.key + '-' + month.key }">
+
+                            <div class="list-group">
+                                <a th:each="article:${month.value}"
+                                   th:href="@{'/article/display/' + ${article.aid} }"
+                                   class="list-group-item" th:inline="text" target="_blank">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;
+                                    [[${#dates.format(article.gmtPost,"dd")}]]日: &nbsp;&nbsp;
+                                    <strong>[[${article.title}]]</strong>
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="list-group" style="position: fixed;width: 10%;">
+                <a id="showHide" href="javascript:void(0);" class="list-group-item active">
+                    <span class="glyphicon glyphicon-plus"></span> &nbsp;&nbsp;
+                    文章归档
+                </a>
+                <a class="list-group-item" th:each="map : ${articleMap}" th:href="@{'#' + ${map.key} }"
+                   th:inline="text">
+                    [[${map.key}]]年
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:include="common/footer"
+        style=" position: absolute;bottom: 0;width: 100%;height: 60px;background-color: #99979c;"></footer>
+<script th:src="@{/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/particles.min.js}"></script>
+<script th:src="@{/js/badblog.js}"></script>
+<script>
+
+    $(".collapse .list-group a").hover(function () {
+        $(this).addClass("list-group-item-success");
+        $(this).animate({left: "+=10px"}, 200);
+    },function () {
+        $(this).removeClass("list-group-item-success");
+        $(this).animate({left: "-=10px"}, 200);
+    });
+
+
+    var clickCount = 0;
+    $("#showHide").click(function () {
+
+        if (clickCount % 2) {
+            $("#showHide span").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+            $("[role='tabpanel']").collapse("hide");
+        } else {
+            $("#showHide span").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+            $("[role='tabpanel']").collapse("show");
+        }
+
+        ++clickCount;
+    });
+
+    // 展开第一项
+    $("[role='tabpanel']").first().collapse();
+
+</script>
+</body>
+</html>

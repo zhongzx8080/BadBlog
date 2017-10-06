@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>博客首页</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <style type="text/css">
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            padding-bottom: 70px;
+            margin-bottom: 60px;
+            padding-top: 70px;
+        }
+
+    </style>
+</head>
+<body>
+<header th:include="common/navbar"></header>
+
+<div class="container" th:if="${ #lists.size(articleList) == 0 }" th:include="common/blank"></div>
+
+<div class="container" th:unless="${ #lists.size(articleList) == 0 }">
+    <div class="row">
+
+        <div class="col-md-9">
+
+            <!--
+
+                显示文章
+
+            -->
+            <div class="jumbotron" th:each="article : ${articleList}">
+                <h3 th:inline="text">
+                    <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}"
+                       target="_blank"></a>
+                </h3>
+                <p th:utext="${article.html}" style="max-height: 100px;overflow: hidden;"></p>
+                <p>
+
+                    <a class="btn btn-default btn-lg" th:href="@{'/article/display/' + ${article.aid} }"
+                       target="_blank">
+                        阅读全文
+                    </a>
+                    <span style="float: right;" th:inline="text">
+                        <span class="label label-default ">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                            [[${article.view}]]
+                        </span>
+                        &nbsp;&nbsp;
+                        <span class="label label-default ">
+                            <span class="glyphicon glyphicon-time"></span>
+                            [[${#dates.format(article.gmtPost,"YYYY-MM-dd HH:mm:ss")}]]
+                        </span>
+                    </span>
+                </p>
+            </div>
+
+            <!--
+
+                分页
+
+            -->
+            <div class="text-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-lg">
+                        <li th:if="${page.hasPrePage}">
+                            <a th:href="@{'/p/' + ${ page.currentPage - 1} }" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="/p/1">首页</a>
+                        </li>
+
+                        <li th:each="p : ${#numbers.sequence( (page.totalPage - page.currentPage < 7) ? (page.totalPage - 7 > 0 ? page.totalPage - 7:1) :page.currentPage , page.currentPage + 7 < page.totalPage ? page.currentPage + 7 : page.totalPage )}"
+                            th:class="${p == page.currentPage ? 'active' :''  }">
+                            <a th:href="@{'/p/' + ${p} }" th:text="${p}"></a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{ '/p/' +${page.totalPage} }">尾页</a>
+                        </li>
+
+                        <li th:if="${page.hasNextPage}">
+                            <a th:href="@{'/p/' + ${ page.currentPage + 1} }" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </nav>
+                <div>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon" th:inline="text">共[[${page.totalPage}]]页</div>
+                                <input id="totalPage" type="hidden" th:value="${page.totalPage}">
+                                <input type="text" class="form-control" id="jumpTo" placeholder="跳转页"
+                                       required="required">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="jumpTo();">跳转</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!--
+
+            阅读排行榜
+
+        -->
+        <div class="col-md-3">
+            <div style="position: fixed;width: 20%;">
+
+                <ul class="list-group" th:inline="text">
+                    <li class="list-group-item list-group-item-success">
+                        <span class="glyphicon glyphicon-user"></span> &nbsp;个人信息
+                    </li>
+                    <li class="list-group-item">姓名: <strong>钟志兴</strong></li>
+                    <li class="list-group-item ">专业: <strong>计算机科学与技术</strong></li>
+                </ul>
+
+
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-success ">
+                        <span class="glyphicon glyphicon-star"></span> &nbsp;阅读排行榜
+                    </li>
+                    <li class="list-group-item " th:each="article : ${mostView}" th:inline="text">
+                        <span class="badge" th:inline="text">
+                            ([[${article.view}]])
+                        </span>
+                        <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}"></a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+
+        <!--
+    模态框
+-->
+        <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 id="modalTitle" class="modal-title">请选择</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<footer th:include="common/footer"
+        style=" position: absolute;bottom: 0;width: 100%;height: 60px;background-color: #99979c;"></footer>
+<script th:src="@{/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/badblog.js}"></script>
+
+<script type="text/javascript">
+    function jumpTo() {
+        var page = parseInt($("#jumpTo").val());
+        var totalPage = parseInt($("#totalPage").val());
+
+        if (!page) {
+            return;
+        }
+
+        console.log("page=" + page + "&totalPage=" + totalPage);
+
+        if (page > totalPage || page < 0) {
+            $("#modalTitle").html("页数越界了!");
+            $("#myModal").modal("toggle");
+            return;
+        }
+        location.href = "/p/" + page;
+    }
+</script>
+
+</body>
+</html>
