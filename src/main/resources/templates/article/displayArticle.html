@@ -48,22 +48,27 @@
         }
 
         #tagscloud a.tagc0 {
-            background: #006633;
+            background: #8a6d3b;
             color: #fff;
         }
 
         #tagscloud a.tagc1 {
-            background: #666;
+            background: #286090;
             color: #fff;
         }
 
         #tagscloud a.tagc2 {
-            background: #F16E50;
+            background: #a94442;
+            color: #fff;
+        }
+
+        #tagscloud a.tagc3 {
+            background: #3c763d;
             color: #fff;
         }
 
         #tagscloud a:hover {
-            background: #0099ff;
+            background: #3c763d;
             color: #fff;
         }
 
@@ -130,11 +135,11 @@
             </li>
             <div id="tagscloud">
                 <a th:each="tag : ${tags}" th:href="@{'/category/all#' + ${tag.cid} }" th:text="${tag.category}"
-                   th:class="${ 'tagc' + tagStat.count % 3 }" target="_blank"></a>
+                   th:class="${ 'tagc' + tagStat.count % 4 }" target="_blank"></a>
                 <a th:each="tag : ${tags}" th:href="@{'/category/all#' + ${tag.cid} }" th:text="${tag.category}"
-                   th:class="${ 'tagc' + tagStat.count % 3 }" target="_blank"></a>
+                   th:class="${ 'tagc' + tagStat.count % 4 }" target="_blank"></a>
                 <a th:each="tag : ${tags}" th:href="@{'/category/all#' + ${tag.cid} }" th:text="${tag.category}"
-                   th:class="${ 'tagc' + tagStat.count % 3 }" target="_blank"></a>
+                   th:class="${ 'tagc' + tagStat.count % 4 }" target="_blank"></a>
             </div>
 
             <ul class="list-group">
@@ -145,7 +150,7 @@
                         <span class="badge" th:inline="text">
                             ([[${article.view}]])
                         </span>
-                    <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}"></a>
+                    <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}" data-toggle="tooltip" data-placement="left" th:title="${article.title}" ></a>
                 </li>
             </ul>
 

@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>博客首页</title>
+    <title>BadBlog | 首页</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
     <style type="text/css">
         html {
@@ -139,7 +139,7 @@
                         <span class="badge" th:inline="text">
                             ([[${article.view}]])
                         </span>
-                        <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}"></a>
+                        <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}" data-toggle="tooltip" data-placement="left" th:title="${article.title}" ></a>
                     </li>
                 </ul>
             </div>

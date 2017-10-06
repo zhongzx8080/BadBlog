@@ -10,8 +10,7 @@ function scrollFunction() {
         $("#toTop").fadeIn("slow");
     } else {
         $("#toTop").css("display","none");
-        // document.getElementById("toTop").style.display = "none";
-        $("#toTop").fadeOut("slow").tooltip("hide");
+        $("#toTop").fadeOut("slow");
     }
 
 }
@@ -87,7 +86,8 @@ $().ready(function () {
     changeWidth();
     activeNavbar();
     loading();
-    $("#toTop").tooltip();
+    // $("#toTop").tooltip();
+    $('[data-toggle="tooltip"]').tooltip()
 });
 
 
