@@ -4,6 +4,7 @@
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" th:href="@{/images/badblog.ico}">
     <title>BadBlog | 首页</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
     <style type="text/css">
@@ -122,13 +123,9 @@
         <div class="col-md-3">
             <div style="position: fixed;width: 20%;">
 
-                <ul class="list-group" th:inline="text">
-                    <li class="list-group-item list-group-item-success">
-                        <span class="glyphicon glyphicon-user"></span> &nbsp;个人信息
-                    </li>
-                    <li class="list-group-item">姓名: <strong>钟志兴</strong></li>
-                    <li class="list-group-item ">专业: <strong>计算机科学与技术</strong></li>
-                </ul>
+                <div class="list-group" th:inline="text" th:include="common/profile">
+
+                </div>
 
 
                 <ul class="list-group">
@@ -139,7 +136,7 @@
                         <span class="badge" th:inline="text">
                             ([[${article.view}]])
                         </span>
-                        <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}" data-toggle="tooltip" data-placement="left" th:title="${article.title}" ></a>
+                        <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}" data-toggle="tooltip" data-placement="top" th:title="${article.title}" ></a>
                     </li>
                 </ul>
             </div>

@@ -36,13 +36,7 @@ public class HomeController {
 
 
     @RequestMapping(value = {"/", "/home"})
-    public String home(HttpSession session) {
-
-        /*User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/user/login";
-        }*/
-
+    public String home() {
         return "forward:/p/1";
     }
 
@@ -117,18 +111,12 @@ public class HomeController {
 
 
     @RequestMapping("/search")
-    public String search(@RequestParam("keyword") String keyword, Model model, HttpSession session, RedirectAttributes attributes) {
+    public String search(@RequestParam(value = "keyword",defaultValue = "") String keyword, Model model, HttpSession session, RedirectAttributes attributes) {
 
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
             user.setUid(1);
-        }
-
-
-        if (keyword == null) {
-            attributes.addAttribute("reason", "请输入关键字进行查询!");
-            return "redirect:/err";
         }
 
         List<Article> articleList = articleService.search(keyword, user.getUid());

@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8"/>
+    <link rel="shortcut icon" th:href="@{/images/badblog.ico}">
     <title th:text="${article.title}">展示</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/editormd.preview.css}"/>
@@ -68,7 +69,7 @@
         }
 
         #tagscloud a:hover {
-            background: #3c763d;
+            background: #333;
             color: #fff;
         }
 
@@ -120,14 +121,8 @@
         </div>
 
         <div class="col-sm-3 blog-sidebar">
-            <div class="sidebar-module">
-                <ul class="list-group" th:inline="text">
-                    <li class="list-group-item list-group-item-success">
-                        <span class="glyphicon glyphicon-user"></span> &nbsp;个人信息
-                    </li>
-                    <li class="list-group-item">姓名: <strong>钟志兴</strong></li>
-                    <li class="list-group-item ">专业: <strong>计算机科学与技术</strong></li>
-                </ul>
+            <div class="sidebar-module" th:include="common/profile">
+
             </div>
 
             <li class="list-group-item list-group-item-success ">
@@ -137,9 +132,9 @@
                 <a th:each="tag : ${tags}" th:href="@{'/category/all#' + ${tag.cid} }" th:text="${tag.category}"
                    th:class="${ 'tagc' + tagStat.count % 4 }" target="_blank"></a>
                 <a th:each="tag : ${tags}" th:href="@{'/category/all#' + ${tag.cid} }" th:text="${tag.category}"
-                   th:class="${ 'tagc' + tagStat.count % 4 }" target="_blank"></a>
+                   th:class="${ 'tagc' + (tagStat.count + 1) % 4 }" target="_blank"></a>
                 <a th:each="tag : ${tags}" th:href="@{'/category/all#' + ${tag.cid} }" th:text="${tag.category}"
-                   th:class="${ 'tagc' + tagStat.count % 4 }" target="_blank"></a>
+                   th:class="${ 'tagc' + (tagStat.count + 2) % 4 }" target="_blank"></a>
             </div>
 
             <ul class="list-group">
@@ -150,7 +145,8 @@
                         <span class="badge" th:inline="text">
                             ([[${article.view}]])
                         </span>
-                    <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}" data-toggle="tooltip" data-placement="left" th:title="${article.title}" ></a>
+                    <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}"
+                       data-toggle="tooltip" data-placement="top" th:title="${article.title}"></a>
                 </li>
             </ul>
 
