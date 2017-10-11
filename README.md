@@ -16,6 +16,7 @@
 - 模糊查询
 - 登录后台
 - 通过邮箱验证码找回密码
+- [Shell脚本](https://github.com/programmerzzx/Scripts/blob/master/backup_database.sh) 备份数据库至码云私有仓库
 
 
 
