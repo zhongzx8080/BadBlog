@@ -19,18 +19,13 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         /*
         *
-        * 若 url 中含 create,update,delete 且没有登录返回登录;
+        * 若 url 中含 create,update,delete 等关键字 且没有登录返回登录;
+        *
+        * @TODO: Shiro 权限
         *
         * */
 
         String url = httpServletRequest.getRequestURI();
-
-        /*boolean test = (url.indexOf("create") > -1 || url.indexOf("update") > -1 ||
-                url.indexOf("delete") > -1 || url.indexOf("publish") > -1 ||
-                url.indexOf("archive") > -1 || url.indexOf("manage") > -1 ||
-                url.indexOf("edit") > -1 || url.indexOf("p") > -1
-        );*/
-
 
         ArrayList<String> wordList = new ArrayList<>();
         wordList.add("create");

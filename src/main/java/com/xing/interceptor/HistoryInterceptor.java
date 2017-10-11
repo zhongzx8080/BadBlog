@@ -26,6 +26,7 @@ public class HistoryInterceptor implements HandlerInterceptor {
 
         History history = new History();
 
+        String host = request.getRemoteHost();
         String ip = request.getRemoteAddr();
         String url = request.getRequestURI();
         HttpSession session = request.getSession();
@@ -42,7 +43,7 @@ public class HistoryInterceptor implements HandlerInterceptor {
 
         historyService.insertHistory(history);
 
-        System.out.println("ip=" + ip + "&url=" + url + "&uid=");
+        System.out.println("host=" + host + "ip=" + ip + "&url=" + url + "&uid=");
 
         return true;
     }

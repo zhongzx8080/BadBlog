@@ -86,8 +86,7 @@ $().ready(function () {
     changeWidth();
     activeNavbar();
     loading();
-    // $("#toTop").tooltip();
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 

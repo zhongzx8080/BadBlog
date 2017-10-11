@@ -1,7 +1,6 @@
 package com.xing.service;
 
 import com.xing.entity.Article;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
