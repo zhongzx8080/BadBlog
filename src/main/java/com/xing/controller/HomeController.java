@@ -91,7 +91,7 @@ public class HomeController {
         });
 
 
-        List<Article> mostView = articleService.viewMost(user.getUid(), 7);
+        List<Article> mostView = articleService.viewMost(user.getUid(), 5);
 
         model.addAttribute("mostView", mostView);
         model.addAttribute("page", page);

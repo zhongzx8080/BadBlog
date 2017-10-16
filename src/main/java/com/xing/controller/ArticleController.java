@@ -125,7 +125,7 @@ public class ArticleController {
         model.addAttribute("categoryList", categoryList);
 
 
-        List<Article> mostView = articleService.viewMost(1, 7);
+        List<Article> mostView = articleService.viewMost(user.getUid(), 5);
         model.addAttribute("mostView", mostView);
 
         return "article/displayArticle";
@@ -257,7 +257,6 @@ public class ArticleController {
 
         User user = (User) session.getAttribute("user");
 
-        //System.out.println("删除aidList" + Arrays.toString(aidList));
         articleService.deleteArticle(Arrays.asList(aidList), user.getUid());
 
         return "success";
