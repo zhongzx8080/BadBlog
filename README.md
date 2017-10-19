@@ -4,7 +4,9 @@
 
 ## 简介
 
-> `BadBlog` 是一款集成 Editor.md 编辑器的个人博客系统 ，用 [Shell 脚本](https://github.com/programmerzzx/Scripts/blob/master/backup_database.sh)实现将数据库备份至码云私有仓库。
+> `BadBlog` 是一款集成 Editor.md 编辑器的个人博客系统 
+>
+> 用 [Shell 脚本](https://github.com/programmerzzx/Scripts/blob/master/backup_database.sh)实现将数据库备份至码云私有仓库
 
 
 
@@ -91,8 +93,3 @@
 
 
 
-## TODO
-
-- [ ] 评论功能
-- [ ] Shiro 权限验证
-- [ ] 前后端分离
