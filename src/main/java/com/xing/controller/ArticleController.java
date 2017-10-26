@@ -82,6 +82,12 @@ public class ArticleController {
     @RequestMapping("/article/display/{aid}")
     public String display(@PathVariable("aid") Integer aid, Model model, HttpSession session, RedirectAttributes attributes) {
 
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setUid(1);
+        }
+
         /*
         *
         * 获取文章，浏览数+1 ，再获取分类
@@ -90,6 +96,11 @@ public class ArticleController {
         Article article = articleService.getArticleByAid(aid);
 
         if (article == null) {
+            attributes.addFlashAttribute("reason", "文章不存在!");
+            return "redirect:/err";
+        }
+
+        if (article.getUid() != user.getUid()) {
             attributes.addFlashAttribute("reason", "文章不存在!");
             return "redirect:/err";
         }
@@ -106,14 +117,10 @@ public class ArticleController {
         *
         * 获取所有分类标签
         * */
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setUid(1);
-        }
+
 
         List<Category> tags = categoryService.listCategoryByUid(user.getUid());
-        model.addAttribute("tags",tags);
+        model.addAttribute("tags", tags);
 
 
         /*
