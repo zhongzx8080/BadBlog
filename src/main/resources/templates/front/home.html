@@ -19,6 +19,11 @@
             padding-top: 70px;
         }
 
+        .btn-lg:hover {
+            color: white;
+            background-color: #000;
+        }
+
     </style>
 </head>
 <body>
@@ -41,7 +46,9 @@
                     <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}"
                        target="_blank"></a>
                 </h3>
+                <br>
                 <p th:utext="${article.html}" style="max-height: 100px;overflow: hidden;"></p>
+                <br>
                 <p>
 
                     <a class="btn btn-default btn-lg" th:href="@{'/article/display/' + ${article.aid} }"
@@ -61,6 +68,7 @@
                     </span>
                 </p>
             </div>
+
 
             <!--
 
@@ -113,6 +121,8 @@
                 </div>
             </div>
 
+
+
         </div>
 
         <!--
@@ -136,7 +146,8 @@
                         <span class="badge" th:inline="text">
                             ([[${article.view}]])
                         </span>
-                        <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}" data-toggle="tooltip" data-placement="top" th:title="${article.title}" ></a>
+                        <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}"
+                           data-toggle="tooltip" data-placement="top" th:title="${article.title}"></a>
                     </li>
                 </ul>
             </div>
@@ -193,6 +204,5 @@
 
 
 </script>
-
 </body>
 </html>
