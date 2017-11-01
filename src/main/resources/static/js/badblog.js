@@ -33,9 +33,9 @@ function changeWidth() {
 function activeNavbar() {
 
     $(".navbar-nav li").hover(function () {
-        $(this).addClass("active");
+        $(this).addClass("active").css("border-bottom","3px solid #008B00");
     },function () {
-        $(this).removeClass("active");
+        $(this).removeClass("active").css("border-bottom","");
     });
 
 }

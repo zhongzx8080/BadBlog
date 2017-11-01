@@ -49,7 +49,7 @@
 
 
 ## 运行效果
-- [演示地址](http://rexunil.com:8888) | 内置tomcat端口修被改为:8888
+- [演示地址](http://rexunil.com:8888) | 内置tomcat端口已修改为:8888
 
 - 首页
 
