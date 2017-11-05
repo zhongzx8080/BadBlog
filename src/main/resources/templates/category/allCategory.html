@@ -78,15 +78,15 @@
 <script th:src="@{/js/particles.min.js}"></script>
 <script th:src="@{/js/badblog.js}"></script>
 <script>
-    $(".list-group  a").mouseover(function () {
+    $(".list-group  a").hover(function () {
         $(this).addClass("list-group-item-warning");
-    }).mouseout(function () {
+    }, function () {
         $(this).removeClass("list-group-item-warning");
     });
 
-    $(".list-group-item").mouseover(function () {
+    $(".list-group-item").hover(function () {
         $(this).css({left: "+=10px"});
-    }).mouseout(function () {
+    }, function () {
         $(this).css({left: "-=10px"});
     });
 

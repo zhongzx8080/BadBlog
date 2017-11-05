@@ -47,7 +47,7 @@
                     <td>日期</td>
                     <td>浏览量</td>
                 </tr>
-                <tr th:each="article : ${articleList}">
+                <tr  th:each="article : ${articleList}">
                     <td th:text="${articleStat.count}"></td>
                     <td th:inline="text">
                         <a th:href="@{'/article/display/' + ${article.aid} }" th:utext="${article.title}" ></a>

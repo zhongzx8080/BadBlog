@@ -40,7 +40,7 @@
 
 ## 数据库设计
 
-- [SQL Demo脚本](https://github.com/zhongzhixing/BadBlog/blob/master/badblog.sql)
+- [SQL 测试数据脚本](https://github.com/zhongzhixing/BadBlog/blob/master/badblog.sql)
 
 
 
