@@ -19,11 +19,45 @@
             padding-top: 70px;
         }
 
+        .title {
+            text-decoration: none;
+            position: relative;
+        }
+
+        .title:hover, .title:visited {
+            text-decoration: none;
+        }
+
+        .title:after {
+            content: "";
+            width: 0;
+            height: 2px;
+            background: #555;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            -webkit-transition: all 0.8s;
+            -moz-transition: all 0.8s;
+            -ms-transition: all 0.8s;
+            -o-transition: all 0.8s;
+            transition: all 0.8s;
+        }
+
+        .title:hover:after {
+            left: 0%;
+            width: 100%;
+        }
+
+        .btn-lg {
+            border: 2px solid #555;
+        }
+
         .btn-lg:hover {
             color: white;
             background-color: #000;
         }
-        .jumbotron:hover{
+
+        .jumbotron:hover {
             box-shadow: 5px 5px 10px #888;
         }
     </style>
@@ -45,7 +79,7 @@
             -->
             <div class="jumbotron" th:each="article : ${articleList}">
                 <h3 th:inline="text">
-                    <a th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}"
+                    <a class="title" th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}"
                        target="_blank"></a>
                 </h3>
                 <br>
@@ -77,7 +111,7 @@
                 分页
 
             -->
-            <div class="text-center">
+            <div>
                 <nav aria-label="Page navigation">
                     <ul class="pagination pagination-lg">
                         <li th:if="${page.hasPrePage}">
@@ -104,23 +138,8 @@
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
-
-
                     </ul>
                 </nav>
-                <div>
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon" th:inline="text">共[[${page.totalPage}]]页</div>
-                                <input id="totalPage" type="hidden" th:value="${page.totalPage}">
-                                <input type="text" class="form-control" id="jumpTo" placeholder="跳转页"
-                                       required="required">
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-primary" onclick="jumpTo();">跳转</button>
-                    </div>
-                </div>
             </div>
 
 
@@ -154,26 +173,6 @@
             </div>
 
         </div>
-
-
-        <!--
-    模态框
--->
-        <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 id="modalTitle" class="modal-title">请选择</h4>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>
 
@@ -183,26 +182,5 @@
 <script th:src="@{/jquery.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <script th:src="@{/js/badblog.js}"></script>
-
-<script type="text/javascript">
-    function jumpTo() {
-        var page = parseInt($("#jumpTo").val());
-        var totalPage = parseInt($("#totalPage").val());
-
-        if (!page) {
-            return;
-        }
-
-        console.log("page=" + page + "&totalPage=" + totalPage);
-
-        if (page > totalPage || page < 0) {
-            $("#modalTitle").html("页数越界了!");
-            $("#myModal").modal("toggle");
-            return;
-        }
-        location.href = "/p/" + page;
-    }
-
-</script>
 </body>
 </html>
