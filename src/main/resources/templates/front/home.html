@@ -20,11 +20,10 @@
         }
 
         .title {
-            text-decoration: none;
             position: relative;
         }
 
-        .title:hover, .title:visited {
+        .title:hover, .title:visited, .title:active, .title:link {
             text-decoration: none;
         }
 
@@ -32,7 +31,7 @@
             content: "";
             width: 0;
             height: 2px;
-            background: #555;
+            background-color: green;
             position: absolute;
             top: 100%;
             left: 50%;
@@ -48,8 +47,13 @@
             width: 100%;
         }
 
+        .content {
+            max-height: 100px;
+            text-overflow: ellipsis;
+        }
+
         .btn-lg {
-            border: 2px solid #555;
+            border: 1px solid #555;
         }
 
         .btn-lg:hover {
@@ -60,6 +64,8 @@
         .jumbotron:hover {
             box-shadow: 5px 5px 10px #888;
         }
+
+
     </style>
 </head>
 <body>
@@ -79,11 +85,11 @@
             -->
             <div class="jumbotron" th:each="article : ${articleList}">
                 <h3 th:inline="text">
-                    <a class="title" th:href="@{'/article/display/' + ${article.aid} }" th:text="${article.title}"
+                    <a class="title"  th:href="@{'/article/display/' + ${article.aid} }"  th:text="${article.title}"
                        target="_blank"></a>
                 </h3>
                 <br>
-                <p th:utext="${article.html}" style="max-height: 100px;overflow: hidden;"></p>
+                <p class="content" th:utext="${article.html}"></p>
                 <br>
                 <p>
                     <a class="btn btn-default btn-lg" th:href="@{'/article/display/' + ${article.aid} }"

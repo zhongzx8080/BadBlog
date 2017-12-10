@@ -31,11 +31,10 @@ function changeWidth() {
 }
 
 function activeNavbar() {
-
-    $(".navbar-nav li").hover(function () {
-        $(this).addClass("active").css("border-bottom","3px solid #008B00");
-    },function () {
-        $(this).removeClass("active").css("border-bottom","");
+    $(".navbar-nav li a").hover(function () {
+        $(this).css({"color": "white","background-color": "#3c763d"});
+    }, function () {
+        $(this).css({"color": "#777","background-color": "transparent" });
     });
 
 }

@@ -16,6 +16,7 @@
             margin-bottom: 60px;
             padding-top: 70px;
         }
+
         .background {
             position: absolute;
             display: block;
@@ -68,5 +69,14 @@
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <script th:src="@{/js/particles.min.js}"></script>
 <script th:src="@{/js/badblog.js}"></script>
+<script>
+    /*
+     *
+     *  5 秒后自动跳转到首页
+     * */
+    setTimeout(function () {
+        location.href = "/";
+    }, 5000);
+</script>
 </body>
 </html>
