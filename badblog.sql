@@ -209,7 +209,6 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'hello', 'world', '2776182473@qq.com', '2017-10-09 16:51:21', '1');
 INSERT INTO `user` VALUES ('5', 'test', 'test', 'firefox@qq.com', '2017-10-16 15:48:59', '1');
 DROP TRIGGER IF EXISTS `deleteByaid`;
 DELIMITER ;;
