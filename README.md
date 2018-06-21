@@ -1,6 +1,6 @@
-## 演示地址
+## 演示地址 (服务器已过期)
 
-[BadBlog](http://www.rexunil.com:8888)
+[BadBlog](https://github.com/zhongzhixing/BadBlog)
 
 ## 简介
 
