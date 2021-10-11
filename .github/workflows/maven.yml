@@ -27,8 +27,9 @@ jobs:
     - name: Run
       env:
         MAIL: xx@.com
-        LIST[0]: list0
+        LIST_0: list0
       run: |
         echo hello github actions
+        pwd
         echo $MAIL mail
-        echo $LIST[0] arr
+        echo $LIST_0 arr
